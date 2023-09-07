@@ -214,6 +214,8 @@ Style "control-panel"  	TitleIcon mini-redhat.xpm
 Style "*console*"  	TitleIcon mini-display.xpm
 # UF4N's styles
 Style "*irefox*"	TitleIcon mini-firefox.xpm
+Style "*Mousepad*    TitleIcon  mini-firefox.xpm
+Style "*edit    TitleIcon mini-edit.xpm
 
 
 #=============================================================================#
@@ -224,16 +226,18 @@ Style "*irefox*"	TitleIcon mini-firefox.xpm
 
 
 DestroyFunc "InitFunction" 
-AddToFunc "InitFunction"    "I" Exec xsetroot -solid Cyan4 \
+AddToFunc "InitFunction"    "I" Exec feh --bg-scale /usr/local/lib/X11/icons/silent_kirov.jpg
+#+                           "I" Exec xsetroot -solid Cyan4 \
                                               -cursor_name top_left_arrow
 +                           "I" Exec pulseaudio
 +                           "I" Exec nitrogen --restore
-+                           "I" Exec xscreensaver
++                           "I" Exec xscreensaver --no-splash
 #+                          "I" Module FvwmButtons
 +                           "I" Module FvwmTaskBar
 +			    "I" Module FvwmBanner
 #+                          "I" Read  .fvwm95rc-settings
 #+			    "I" Module FvwmAudio
++			    "I" Exec xeyes -distance
 
 DestroyFunc "RestartFunction"
 AddToFunc "RestartFunction" "I" Module FvwmTaskBar
@@ -257,7 +261,7 @@ DestroyFunc "Move-or-Raise"
 AddToFunc "Move-or-Raise" "M" Move
 +                         "M" Raise
 +                         "C" Raise
-+                         "D" Maximize 100 96
++                         "D" Maximize 100 100
 
 
 
@@ -290,9 +294,9 @@ AddToFunc "Move-or-Iconify" "M" Move
 
 
 DestroyFunc "Maximize-Func"
-AddToFunc "Maximize-Func" "M"	Maximize 0 96
+AddToFunc "Maximize-Func" "M"	Maximize 0 100
 + 			  "C"	Maximize 0 100
-+ 			  "D"	Maximize 100 96
++ 			  "D"	Maximize 100 100
 
 #------------------------------------------------------------------------------
 # This one resizes and then raises the window if you drag the mouse,
@@ -362,7 +366,7 @@ AddToFunc WarpOrExec	   "I" Next [$0] Iconify -1
 DestroyMenu "StartMenu"
 AddToMenu "StartMenu@fvwm-menu.xpm@^#808080^" \
   "&Terminal%mini-term.xpm%"			Exec xterm -bg black -fg green
-+ "&File manager%mini-filemgr.xpm%"		Exec thunar
++ "&File manager%mini-filemgr.xpm%"		Exec xfe
 + "&Tux Commander%mini-diskette.xpm"		Exec tuxcmd
 + ""				Nop
 + "&Programs%programs.xpm%"	Popup Programs
@@ -423,10 +427,11 @@ AddToMenu "Accessories" \
 
 DestroyMenu "Games"
 AddToMenu "Games" \
-  "Maze%mini-maze.xpm%"		Exec maze 
-+ "Spider%mini-espada.xpm%"	Exec spider 
-+ "Chess%mini-slon.xpm%"	Exec xboard 
-+ "Xlander%mini-xlander.xpm%"	Exec exec xlander 
+  "Chess%mini-slon.xpm%"	Exec xboard 
+#  "Maze%mini-maze.xpm%"		Exec maze 
+#+ "Spider%mini-espada.xpm%"	Exec spider  
+#Заменить эту непонятную программу на коллекцию солитёров ace-of-penguins
+#+ "Xlander%mini-xlander.xpm%"	Exec exec xlander 
 + "Xmahjongg%mini-xmahjongg.xpm%" Exec xmahjongg 
 + "" Nop
 + "Amusements"			Popup Amusements
@@ -434,11 +439,10 @@ AddToMenu "Games" \
 DestroyMenu "Amusements"
 AddToMenu "Amusements" \
   "Eyes%mini-eyes.xpm%"		Exec xeyes 
-+ "X logo%mini-bx2.xpm%"	Exec xlogo 
-+ "Xroach%mini-roach.xpm%"	Exec xroach 
++ "Xroach%mini-roach.xpm%"	Exec xroach  -speed 0.2
 + "Fractint%mini-fractal.xpm%"	Exec xterm -font 7x14 -e xfractint map=chroma  
 + "Xsnow%mini-xsnow.xpm%"	Exec xsnow 
-+ "Desktop cat%mini-cat.xpm%"	Exec xcat 
+#+ "Desktop cat%mini-cat.xpm%"	Exec xcat 
 
 #------------------------------------------------------------------------------
 #--------- Multimedia
@@ -456,15 +460,8 @@ AddToMenu "Multimedia" \
 
 DestroyMenu "Viewers"
 AddToMenu "Viewers" \
-  "Ghostview (Postscript)%mini-gv.xpm%"	Exec ghostview 
-+ "GV (Postscript)%mini-gv.xpm%"	Exec gv 
-+ "Acroread (PDF)%mini-pdf.xpm%"	Exec acroread
-+ "Xpdf (PDF)%mini-pdf.xpm%"		Exec xpdf
-+ "Xview (images)%mini-xv.xpm%"		Exec xv 
-+ "Pixmap browser%mini-paint.xpm%"	Exec xbmbrowser 
-+ "View colormap%mini-colors.xpm%"	Exec xcolormap 
-+ "Color viewer%mini-colors.xpm%"	Exec xcolorsel 
-+ "Font viewer%mini-font.xpm%"		Exec xfontsel 
+  "Xpdf (PDF)%mini-pdf.xpm%"		Exec xpdf
++ "XFImages%mini-xv.xpm%"		Exec xfi 
 
 #------------------------------------------------------------------------------
 #--------- Internet
@@ -499,8 +496,8 @@ AddToMenu "Graphics" \
 
 DestroyMenu "WordPro"
 AddToMenu "WordPro" \
-  "Lyx%mini-edit.xpm%"	Exec lyx 
-+ "Thot%mini-edit.xpm%"	Exec thot
+  "Mousepad%mini-edit.xpm%"	Exec mousepad 
++ "XFWriter%mini-edit.xpm%"		Exec xfw
 
 #------------------------------------------------------------------------------
 #--------- Scientific applications
@@ -598,7 +595,6 @@ AddToMenu "Settings" \
 #+ "Sounds %mini-audiovol.xpm%"		Popup Sound-Settings
 + "X settings%mini-monitor.xpm%"	Popup X-settings
 + "Date%mini-clock.xpm%"		Module FvwmScript Date
-+ "Wallpaper%mini-monitor.xpm%"		Exec nitrogen
 + "Xscreensaver%mini-lock.xpm%"		Exec xscreensaver-demo
 + "Pavucontrol%mini-speaker.xpm%"	Exec pavucontrol
 + "Fvwm Modules%mini-modules.xpm%"	Popup Module-Popup	
@@ -830,9 +826,9 @@ AddToMenu "Window" "Window Ops" Title
 + "&Lower%mini-lower.xpm%"              Lower
 + "(De)Iconify%mini-iconify.xpm%"       Iconify
 + "(Un)Stick%mini.stick.xpm%"           Stick
-+ "(Un)Maximize%mini-max1.xpm%"         Maximize 100 96
++ "(Un)Maximize%mini-max1.xpm%"         Maximize 100 100
 + "(Un)Maxwide%mini-maxwide.xpm%"       Maximize 100 0
-+ "(Un)Maxtall%mini-maxtall.xpm%"       Maximize   0 96
++ "(Un)Maxtall%mini-maxtall.xpm%"       Maximize   0 100
 + ""                                    Nop
 + "Kill%mini-crosbone.xpm%"             Destroy
 + "&Close"                              Delete
@@ -851,7 +847,7 @@ AddToMenu "Window-Ops2" "&Restore"        Iconify -1
 +                       "&Move"           Move-or-Raise
 +                       "&Size"           Resize-or-Raise
 +                       "Mi&nimize"       Iconify 1
-+                       "Ma&ximize"       Maximize 100 96
++                       "Ma&ximize"       Maximize 100 100
 +                       ""                Nop
 +                       "&Kill"           Destroy
 +                       "&Close	Alt+F4"   Delete
@@ -891,9 +887,9 @@ AddToFunc "window_ops_func" "C" PopUp Window-Ops2
 
 #     Button	Context Modifi 	Function
 
-Mouse 1		R   	A       Menu "Utilities" Nop
+Mouse 1		R   	A       Menu "Without Menu and builtin menu" Nop 			# Menu "Utilites", if you realy want it
 Mouse 2		R    	A       Menu "Window Ops" Nop
-Mouse 3         R       A       WindowList
+#Mouse 3         R       A       WindowList
 #Mouse 3	R    	A      	Module "winlist" FvwmWinList transient
 
 
@@ -909,8 +905,8 @@ Mouse 3         R       A       WindowList
 
 #     Button	Context Modif 	Function
 Mouse 0		1    	A      	Function "window_ops_func"
-Mouse 1         2       A       Delete
-Mouse 0		4    	A     	Maximize 100 96
+Mouse 1    		2      A 		Delete
+Mouse 0		4    	A     	Maximize 100 100
 Mouse 0		6    	A     	Iconify
 
 
@@ -992,8 +988,8 @@ Key Down	A	M	Scroll +0   +10
 # by apps other than the window manager
 #------------------------------------------------------------------------------
 
-Key F9		A	A	Iconify
-Key F10		A	A	Iconify
+Key F9			A	A	Menu "StartMenu"
+#Key F10		A	A	Iconify
 Key F11		A	A	CirculateUp
 Key F12		A	A	CirculateDown
 
@@ -1029,9 +1025,9 @@ Key Tab         A       MS      Next FocusAndWarp
 # press Micro$oft keys (left or right), and skip focus
 # I've bound those keys to F25 and F26 via my .Xmodmap file
 #------------------------------------------------------------------------------
-
-Key F25		A	N	Prev FocusAndWarp
-Key F26 	A	N	Next [!iconic] FocusAndWarp
+# uf4n's version
+Key F25	A	A	Menu "StartMenu" 
+Key F26 	A	A	Menu "StartMenu" 
 
 
 
@@ -1190,7 +1186,7 @@ Style "FvwmTaskBar" NoTitle,BorderWidth 4,HandleWidth 4,Sticky, \
 
 # Now the goodies....
 
-*FvwmTaskBarGoodyLoadablePlugins /usr/local/lib/X11/fvwm95/plugins
+#*FvwmTaskBarGoodyLoadablePlugins /usr/local/lib/X11/fvwm95/plugins
 *FvwmTaskBarGoodyLoadableQuiet
 
 # Modem
@@ -1232,7 +1228,7 @@ Style "FvwmTaskBar" NoTitle,BorderWidth 4,HandleWidth 4,Sticky, \
 #*FvwmTaskBarMailCheckModuleNewMailTip.MAIL You have new mail
 #*FvwmTaskBarMailCheckModuleNewMailCommand.MAIL beep
 #*FvwmTaskBarMailCheckModuleUnreadMailIcon.MAIL mini-unreadmail.xpm
-#3*FvwmTaskBarMailCheckModuleMailFile.MAIL /var/spool/mail/$USER
+#*FvwmTaskBarMailCheckModuleMailFile.MAIL /var/spool/mail/$USER
 #*FvwmTaskBarMailCheckModuleAutoMailTip.MAIL
 #*FvwmTaskBarMailCheckModuleMailTipUnblankScreen.MAIL
 #*FvwmTaskBarMailCheckModuleMailTipFormat.MAIL 1 0 10 2 10
