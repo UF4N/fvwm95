@@ -209,6 +209,7 @@ void Maximize(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 	      unsigned long context, char *action, int *Module);
 extern void       RaiseWindow(FvwmWindow *t);
 extern void       LowerWindow(FvwmWindow *t);
+extern void       UpdateTitle(FvwmWindow *w);
 extern Bool       GrabEm(int);
 extern void       UngrabEm(void);
 extern MenuRoot   *NewMenuRoot(char *name, int function_or_popup);

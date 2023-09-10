@@ -129,46 +129,7 @@ FvwmWindow *AddWindow(Window w)
 	return(NULL);
       }
 
-  if ( XGetWMName(dpy, tmp_win->w, &text_prop) != 0 ) {
-#ifdef I18N
-    if (text_prop.value) text_prop.nitems = strlen(text_prop.value);
-    if (XmbTextPropertyToTextList(dpy, &text_prop, &list, &num) >= Success
-	&& num > 0 && *list)
-#ifndef EVIL
-      {
-	tmp_win->name = *list;
-	tmp_win->realname = *list;
-      }
-    else
-      {
-	tmp_win->name = NoName;
-	tmp_win->realname = NoName;
-      }
-#else /* EVIL */
-      {
-	tmp_win->name = *list;
-	tmp_win->realname = *list;
-	if((tmp_win->name != NULL) && (strcmp(tmp_win->name, "")==0)) {
-	  XGetWMName(dpy, tmp_win->w, &text_prop);
-	  tmp_win->name = (char *)text_prop.value ;
-	  tmp_win->realname = (char *)text_prop.value ;
-	}
-      }
-    else
-      {
-	XGetWMName(dpy, tmp_win->w, &text_prop);
-	tmp_win->name = (char *)text_prop.value ;
-	tmp_win->realname = (char *)text_prop.value ;
-      }
-#endif /* EVIL */
-#else /* I18N */
-    tmp_win->name = (char *)text_prop.value;
-    tmp_win->realname = (char *)text_prop.value;
-#endif /* I18N */
-  } else {
-    tmp_win->name = NoName;
-    tmp_win->realname = NoName;
-  }
+  UpdateTitle(tmp_win);
 
 #ifdef I18N
   if (XGetWindowProperty(dpy, tmp_win->w, XA_WM_ICON_NAME, 0L, 200L, False,
@@ -554,37 +515,7 @@ FvwmWindow *AddWindow(Window w)
   attributes.do_not_propagate_mask = ButtonPressMask | ButtonReleaseMask;
 
   XChangeWindowAttributes (dpy, tmp_win->w, valuemask, &attributes);
-  if ( XGetWMName(dpy, tmp_win->w, &text_prop) != 0 ) 
-#ifdef I18N
-  {
-    if (text_prop.value) text_prop.nitems = strlen(text_prop.value);
-    if (XmbTextPropertyToTextList(dpy, &text_prop, &list, &num) >= Success
-	&& num > 0 && *list)
-#ifndef EVIL
-      tmp_win->name = *list;
-    else
-      tmp_win->name = NoName;
-#else /* EVIL */
-      {
-	tmp_win->name = *list;
-	tmp_win->realname = *list;
-	if((tmp_win->name != NULL) && (strcmp(tmp_win->name, "")==0)) {
-	  XGetWMName(dpy, tmp_win->w, &text_prop);
-	  tmp_win->name = (char *)text_prop.value ;
-	}
-      }
-    else
-      {
-	XGetWMName(dpy, tmp_win->w, &text_prop);
-	tmp_win->name = (char *)text_prop.value ;
-      }
-#endif /* EVIL */
-  }
-#else /* I18N */
-    tmp_win->name = (char *)text_prop.value ;
-#endif /* I18N */
-  else
-    tmp_win->name = NoName;
+  UpdateTitle(tmp_win);
   
   XAddToSaveSet(dpy, tmp_win->w);
 

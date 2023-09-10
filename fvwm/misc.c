@@ -78,6 +78,41 @@ void free_window_name (FvwmWindow *tmp)
   tmp->name = NULL;
 }
 
+int
+gettextprop(Window w, Atom atom, char **text)
+{
+	char **list = NULL;
+	int n;
+	XTextProperty name;
+
+	XGetTextProperty(dpy, w, &name, atom);
+	if (!name.nitems)
+		return 0;
+	if (name.encoding == XA_STRING)
+		*text = (char *)name.value;
+	else {
+		if (XmbTextPropertyToTextList(dpy, &name, &list, &n) >= Success && n > 0 && *list) {
+			*text = *list;
+		}
+	}
+	return 1;
+}
+
+void
+UpdateTitle(FvwmWindow *w)
+{
+//
+	w->name = NULL;
+	if (!gettextprop(w->w, XInternAtom(dpy, "_NET_WM_NAME", False), &w->name))
+		gettextprop(w->w, XA_WM_NAME, &w->name);
+	
+	if (NULL == w->name)
+		w->realname = w->name = NoName;
+//	if (c->name[0] == '\0') /* hack to mark broken clients */
+//		strlcpy(c->name, broken, sizeof(c->name));
+}
+
+
 /***************************************************************************
  *
  * Handles destruction of a window 
