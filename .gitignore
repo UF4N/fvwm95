@@ -6,7 +6,6 @@ config.log
 config.status
 configure
 configure~
-install-sh
 install-sh~
 Makefile
 fvwm/Makefile
