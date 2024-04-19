@@ -512,7 +512,7 @@ void MailCheckModule_check_lock(struct MyInfo *mif)
     RenewGoodies = 1;
     if (mif->show & HasNewMail) {
       if (mif->NewMailcommand != NULL)
-	  SendFvwmPipe(mif->NewMailcommand,0); 
+	  SendFvwmPipe(Fvwm_fd[0], mif->NewMailcommand,0); 
     }               
   }
 }
@@ -655,7 +655,7 @@ void MailCheckModuleIconClick(struct MyInfo *mif, XEvent event)
   if (mif == NULL) return;
   if (mif->command == NULL) return;
   if (event.xbutton.time - mif->lastclick < 250) {
-    SendFvwmPipe(mif->command, 0);
+    SendFvwmPipe(Fvwm_fd[0], mif->command, 0);
 #ifdef __DEBUG__
     printf("\"%s\"\n",mif->command);
     fflush(stdout);

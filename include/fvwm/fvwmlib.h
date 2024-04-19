@@ -20,6 +20,7 @@ int StrEquals(char *s1,char *s2);
 int mygethostname(char *client, int namelen);
 int mygetostype(char *buf, int max);
 void SendInfo(int fd, const char *message, unsigned long window);
+void SendFvwmPipe(int fd, const char *message, unsigned long window);
 char *safemalloc(int);
 char *findIconFile(char *icon, char *pathlist, int type);
 int ReadFvwmPacket(int fd, unsigned long *header, unsigned long **body);

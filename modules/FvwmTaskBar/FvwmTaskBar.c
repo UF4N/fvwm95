@@ -233,7 +233,7 @@ void main(int argc, char **argv)
 
   /* Request a list of all windows,
    * wait for ConfigureWindow packets */
-  SendFvwmPipe("Send_WindowList",0);
+  SendFvwmPipe(Fvwm_fd[0], "Send_WindowList",0);
 
   /* Receive all messages from Fvwm */
   EndLessLoop();
@@ -521,44 +521,6 @@ void redraw_buttons()
 }
 
 
-/******************************************************************************
-  SendFvwmPipe - Send a message back to fvwm 
-    Based on SendInfo() from FvwmIdent:
-      Copyright 1994, Robert Nation and Nobutaka Suzuki.
-******************************************************************************/
-void SendFvwmPipe(char *message, unsigned long window)
-{
-  int  w;
-  char *hold, *temp, *temp_msg;
-
-  hold = message;
-  
-  while(1) {
-    temp = strchr(hold, ',');
-    if (temp != NULL) {
-      temp_msg = malloc(temp-hold+1);
-      strncpy(temp_msg, hold, (temp-hold));
-      temp_msg[(temp-hold)] = '\0';
-      hold = temp+1;
-    } else temp_msg = hold;
-    
-    write(Fvwm_fd[0], &window, sizeof(unsigned long));
-    
-    w=strlen(temp_msg);
-    write(Fvwm_fd[0], &w, sizeof(int));
-    write(Fvwm_fd[0], temp_msg, w);
-
-    /* keep going */
-    w = 1;
-    write(Fvwm_fd[0], &w, sizeof(int));
-
-    if(temp_msg != hold)
-      free(temp_msg);
-    else
-      break;
-  }
-}
-
 /***********************************************************************
   Detected a broken pipe - time to exit 
     Based on DeadPipe() from FvwmIdent:
@@ -652,7 +614,7 @@ void ParseConfig()
   int n;
    
   /* Request config info */
-  SendFvwmPipe("Send_ConfigInfo",0);
+  SendFvwmPipe(Fvwm_fd[0], "Send_ConfigInfo",0);
 
   /* 
    * We use the "running" variable to count 2 M_FUNCTION_END messages,
@@ -714,7 +676,7 @@ void ParseConfig()
 	  str = safemalloc(strlen(&tline[Clength+13]) + 8);
 	  sprintf(str, "Module %s",&tline[Clength+13]);
 	  ConsoleMessage("Trying to: %s", str);
-	  SendFvwmPipe(str, 0);
+	  SendFvwmPipe(Fvwm_fd[0], str, 0);
 	
 	  /* Remember the anticipated window's name for swallowing */
 	  i = 4;	      
@@ -738,7 +700,7 @@ void ParseConfig()
 	  str = safemalloc(strlen(&tline[Clength+7]) + 6);
 	  sprintf(str, "Exec %s",&tline[Clength+7]);
 	  ConsoleMessage("Trying to: %s", str);
-	  SendFvwmPipe(str, 0);
+	  SendFvwmPipe(Fvwm_fd[0], str, 0);
 	
 	  /* Remember the anticipated window's name for swallowing */
 	  i = 4;	      
@@ -895,14 +857,14 @@ void LoopOnEvents()
         if (num != -1) {
           ButReleased = ButPressed; /* Avoid race fvwm pipe */
           BelayHide = True; /* Don't AutoHide when function ends */
-          SendFvwmPipe(ClickAction[Event.xbutton.button-1], 
+          SendFvwmPipe(Fvwm_fd[0], ClickAction[Event.xbutton.button-1], 
                        ItemID(&windows, num));
           redraw = 0;
         }
 
         if (HighlightFocus) {
           if (num == ButPressed) RadioButton(&buttons, num, BUTTON_DOWN);
-          if (num != -1) SendFvwmPipe("Focus 0", ItemID(&windows, num));
+          if (num != -1) SendFvwmPipe(Fvwm_fd[0], "Focus 0", ItemID(&windows, num));
         }
         ButPressed = -1;
 	time = Event.xbutton.time;
@@ -921,7 +883,7 @@ void LoopOnEvents()
             y = win_y - ScreenHeight;
           }
           sprintf(tmp,"Popup %s %d %d", StartPopup, x, y);
-          SendFvwmPipe(tmp, ItemID(&windows, 0));
+          SendFvwmPipe(Fvwm_fd[0], tmp, ItemID(&windows, 0));
         } else if ((i_k=LoadableSeeMouse(Event.xbutton.x, Event.xbutton.y))!=0){
 	  HandleLoadableClick(Event, i_k);
 	} else {
@@ -976,7 +938,7 @@ void LoopOnEvents()
           }
         } else {
           if (num != -1 && num != ButPressed)
-            SendFvwmPipe("Focus 0", ItemID(&windows, num));
+            SendFvwmPipe(Fvwm_fd[0], "Focus 0", ItemID(&windows, num));
         }
 
         CheckForTip(Event.xcrossing.x, Event.xcrossing.y);
@@ -1024,7 +986,7 @@ void LoopOnEvents()
           }
         } else {
           if (num != -1 && num != ButPressed)
-            SendFvwmPipe("Focus 0", ItemID(&windows, num));
+            SendFvwmPipe(Fvwm_fd[0], "Focus 0", ItemID(&windows, num));
         }
 
         CheckForTip(Event.xmotion.x, Event.xmotion.y);

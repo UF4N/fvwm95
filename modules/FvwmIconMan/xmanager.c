@@ -571,7 +571,7 @@ void xevent_loop (void)
 	  ConsoleDebug ("\tcomplete:  %d\n", win->complete);
 	  ConsoleDebug ("Sending message to fvwm: %s %d\n", 
 			man->actions[theEvent.xbutton.button - 1], win->app_id);
-	  SendFvwmPipe (man->actions[theEvent.xbutton.button - 1], win->app_id);
+	  SendFvwmPipe (Fvwm_fd[0], man->actions[theEvent.xbutton.button - 1], win->app_id);
 	}
       }
       break;
@@ -582,7 +582,7 @@ void xevent_loop (void)
       move_highlight (man, k);
       win = find_win (man, k);
       if (win)
-	SendFvwmPipe ( man->actions[SELECT], win->app_id);
+          SendFvwmPipe (Fvwm_fd[0], man->actions[SELECT], win->app_id);
       break;
 
     case LeaveNotify:
@@ -617,7 +617,7 @@ void xevent_loop (void)
 	  if (k != -1) {
 	    win = find_win (man, k);
 	    if (win)
-	      SendFvwmPipe ( man->actions[SELECT], win->app_id);
+	      SendFvwmPipe (Fvwm_fd[0], man->actions[SELECT], win->app_id);
 	  }
 	}
       }
@@ -633,7 +633,7 @@ void xevent_loop (void)
 	win = find_win (man, k);
 	move_highlight (man, k);
 	if (win)
-	  SendFvwmPipe ( man->actions[SELECT], win->app_id);
+        SendFvwmPipe (Fvwm_fd[0], man->actions[SELECT], win->app_id);
       }
       break;
     }

@@ -73,13 +73,14 @@ typedef PropMotifWmHints        PropMwmHints;
 #define SHOW_TIP       1
 #define HIDE_TASK_BAR  2
 
+extern int Fvwm_fd[2];
+
 /*************************************************************************
   Subroutine Prototypes
 **************************************************************************/
 void EndLessLoop(void);
 void ReadFvwmPipe(void);
 void ProcessMessage(unsigned long type,unsigned long *body);
-void SendFvwmPipe(char *message,unsigned long window);
 void DeadPipe(int nonsense);
 void Alarm(int nonsense);
 void SetAlarm(int event);
