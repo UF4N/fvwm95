@@ -160,7 +160,7 @@ void server (int *fd, int toclient, int fromclient) {
 	while(fgets( buf, BUFSIZE, inf )) {
           /* strip trailing newline */
           if (buf[strlen(buf)-1] == '\n') buf[strlen(buf)-1] = '\0';
-	  SendText(fd,buf,0); /* send command */
+       SendInfo(fd[0], buf, 0); /* send command */
 	}
 	CloseSocket();
 	kill( getppid(), SIGQUIT);

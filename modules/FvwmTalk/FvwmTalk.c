@@ -258,7 +258,7 @@ void Loop(int *fd)
 		}
 	      else if((keysym == XK_Return)||(keysym == XK_KP_Enter))
 		{
-		  SendText(fd,Text,0);
+	      SendInfo(fd[0], Text, 0);
 		  last_error[0] = 0;
 		  strncpy(previous_line,Text,255);
 		  previous_line[255] = 0;

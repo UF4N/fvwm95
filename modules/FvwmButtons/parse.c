@@ -542,7 +542,7 @@ void match_string(button_info **uberb,char *s)
 		  if(o)
 		    {
 		      if(!(buttonSwallow(b)&b_UseOld))
-			SendText(fd,o,0);
+		    	  SendInfo(fd[0],o,0);
 		      b->spawn=o;  /* Might be needed if respawning sometime */
 		    }
       		}
@@ -679,7 +679,7 @@ void match_string(button_info **uberb,char *s)
       if(*s)
 	{
 	  if(!(buttonSwallow(b)&b_UseOld))
-	    SendText(fd,s,0);
+		  SendInfo(fd[0],s,0);
 	  b->spawn=strdup(s);
 	}
     }

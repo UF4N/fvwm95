@@ -34,7 +34,6 @@ SRCS=GetFdWidth.c \
        Picture.c \
        ReadPacket.c \
        SendInfo.c \
-       SendText.c \
        SetMask.c \
        envvar.c \
        findIconFile.c \
@@ -52,7 +51,6 @@ OBJS=GetFdWidth.o \
        Picture.o \
        ReadPacket.o \
        SendInfo.o \
-       SendText.o \
        SetMask.o \
        envvar.o \
        findIconFile.o \

@@ -13,7 +13,7 @@ void SetMessageMask(int *fd, unsigned long mask)
   char set_mask_mesg[50];
 
   sprintf(set_mask_mesg,"SET_MASK %lu\n",mask);
-  SendText(fd,set_mask_mesg,0);
+  SendInfo(fd[0], set_mask_mesg, 0);
 }
 
 
