@@ -23,7 +23,7 @@ void *GetConfigLine(int *fd, char **tline)
 
   if(first_pass)
     {
-      SendInfo(fd,"Send_ConfigInfo",0);
+      SendInfo(fd[0],"Send_ConfigInfo",0);
       first_pass = 0;
     }
   

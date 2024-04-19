@@ -911,7 +911,7 @@ void SwitchToDesk(int Desk)
   
   sprintf(command,"Desk 0 %d\n",Desk+desk1);
 
-  SendInfo(fd,command,0);  
+  SendInfo(fd[0],command,0);  
 }
 
 
@@ -922,16 +922,16 @@ void SwitchToDeskAndPage(int Desk, XEvent *Event)
   if (Scr.CurrentDesk != (Desk+desk1))
     {
 #ifndef NON_VIRTUAL
-      SendInfo(fd,"Desk 0 10000\n",0);
+      SendInfo(fd[0],"Desk 0 10000\n",0);
       sprintf(command,"GotoPage %d %d\n",
 	      Event->xbutton.x*(Scr.VxMax+Scr.MyDisplayWidth)/
 	      (desk_w*Scr.MyDisplayWidth),
 	      Event->xbutton.y*(Scr.VyMax+Scr.MyDisplayHeight)/
 	      (desk_h*Scr.MyDisplayHeight));
-      SendInfo(fd,command,0);  
+      SendInfo(fd[0],command,0);  
 
       sprintf(command,"Desk 0 %d\n",Desk+desk1);
-      SendInfo(fd,command,0);  
+      SendInfo(fd[0],command,0);  
 
 #endif
     }
@@ -943,7 +943,7 @@ void SwitchToDeskAndPage(int Desk, XEvent *Event)
 	      (desk_w*Scr.MyDisplayWidth),
 	      Event->xbutton.y*(Scr.VyMax+Scr.MyDisplayHeight)/
 	      (desk_h*Scr.MyDisplayHeight));
-      SendInfo(fd,command,0);  
+      SendInfo(fd[0],command,0);  
     }
 #endif
   Wait = 1;
@@ -959,7 +959,7 @@ void IconSwitchPage(XEvent *Event)
 	  (icon_w*Scr.MyDisplayWidth),
 	  Event->xbutton.y*(Scr.VyMax+Scr.MyDisplayHeight)/
 	  (icon_h*Scr.MyDisplayHeight));
-  SendInfo(fd,command,0);  
+  SendInfo(fd[0],command,0);  
 #endif
   Wait = 1;
 }
@@ -1249,7 +1249,7 @@ void Scroll(int Desk, int x, int y)
       if(sy > 100)sy = 100;
   
       sprintf(command,"Scroll %d %d\n",sx,sy);
-      SendInfo(fd,command,0);
+      SendInfo(fd[0],command,0);
       Wait = 1;
     }
 #endif
@@ -1282,7 +1282,7 @@ void IconScroll(int x, int y)
       if(sy > 100)sy = 100;
   
       sprintf(command,"Scroll %d %d\n",sx,sy);
-      SendInfo(fd,command,0);
+      SendInfo(fd[0],command,0);
       Wait = 1;
     }
 #endif
@@ -1392,7 +1392,7 @@ void MoveWindow(XEvent *Event)
 		      Scr.MyDisplayHeight+Scr.VyMax);
 	  XSync(dpy,0);
 	  sprintf(command,"WindowsDesk %d", NewDesk);
-	  SendInfo(fd,command,t->w);
+	  SendInfo(fd[0],command,t->w);
 	  t->desk = NewDesk;
 	}
       if((NewDesk>=desk1)&&(NewDesk<=desk2))
@@ -1408,13 +1408,13 @@ void MoveWindow(XEvent *Event)
 	{
 	  XUngrabPointer(dpy,CurrentTime);
 	  XSync(dpy,0);
-	  SendInfo(fd,"Move",t->icon_w);
+	  SendInfo(fd[0],"Move",t->icon_w);
 	}
       else
 	{
 	  XUngrabPointer(dpy,CurrentTime);
 	  XSync(dpy,0);
-	  SendInfo(fd,"Move",t->w);
+	  SendInfo(fd[0],"Move",t->w);
 	}
       return;
     }
@@ -1472,7 +1472,7 @@ void MoveWindow(XEvent *Event)
 	  else
 	    {
 	      sprintf(command,"WindowsDesk %d", NewDesk + desk1);
-	      SendInfo(fd,command,t->w);
+	      SendInfo(fd[0],command,t->w);
 	      t->desk = NewDesk + desk1;
 	    }
 	}
@@ -1491,7 +1491,7 @@ void MoveWindow(XEvent *Event)
 	    }
 	  else
 	    MoveResizePagerView(t);
-	  SendInfo(fd,"Raise",t->w);
+	  SendInfo(fd[0],"Raise",t->w);
 	}
       if(Scr.CurrentDesk == t->desk)
 	{
@@ -1689,13 +1689,13 @@ void IconMoveWindow(XEvent *Event,PagerWindow *t)
 	{
 	  XUngrabPointer(dpy,CurrentTime);
 	  XSync(dpy,0);
-	  SendInfo(fd,"Move",t->icon_w);
+	  SendInfo(fd[0],"Move",t->icon_w);
 	}
       else
 	{
 	  XUngrabPointer(dpy,CurrentTime);
 	  XSync(dpy,0);
-	  SendInfo(fd,"Move",t->w);
+	  SendInfo(fd[0],"Move",t->w);
 	}
     }
   else
@@ -1733,7 +1733,7 @@ void IconMoveWindow(XEvent *Event,PagerWindow *t)
 	{
 	  MoveResizePagerView(t);
 	}
-      SendInfo(fd,"Raise",t->w);
+      SendInfo(fd[0],"Raise",t->w);
       
       if(t->flags & ICONIFIED)
 	XSetInputFocus (dpy, t->icon_w, RevertToParent, Event->xbutton.time); 

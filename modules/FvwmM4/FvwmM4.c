@@ -181,14 +181,14 @@ void main(int argc, char **argv)
   tmp_file = m4_defs(dpy, display_name,m4_options, filename);
 
   sprintf(read_string,"read %s\n",tmp_file);
-  SendInfo(fd,read_string,0);
+  SendInfo(fd[0],read_string,0);
 
   /* For a debugging version, we may wish to omit this part. */
   /* I'll let some m4 advocates clean this up */
   if(!m4_debug)
     {
       sprintf(delete_string,"exec rm %s\n",tmp_file);
-      SendInfo(fd,delete_string,0);
+      SendInfo(fd[0],delete_string,0);
     }
 }
 

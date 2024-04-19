@@ -702,7 +702,7 @@ int main (int argc, char **argv)
                  M_DEICONIFY | M_ICONIFY | M_END_WINDOWLIST |
                  M_NEW_DESK | M_NEW_PAGE | M_FOCUS_CHANGE | M_WINDOW_NAME);
 
-  SendInfo (Fvwm_fd, "Send_WindowList", 0);
+  SendInfo (Fvwm_fd[0], "Send_WindowList", 0);
   
   main_loop();
 
