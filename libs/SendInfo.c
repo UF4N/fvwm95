@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 
 /***********************************************************************
  *
@@ -27,3 +27,24 @@ void SendInfo(int fd, const char *message, unsigned long window)
       fprintf(stderr, "%s: write error\n", __func__);
 }
 
+
+void SendFvwmPipe(int fd, const char *message, unsigned long window)
+{
+  while(1)
+  {
+    const char* temp = strchr(message, ',');
+    if (NULL == temp) {
+        SendInfo(fd, message, window);
+        break;
+    }
+
+    int len = temp - message;
+    char *temp_msg = malloc(len + 1);
+    memcpy(temp_msg, message, len);
+    temp_msg[len] = 0;
+    SendInfo(fd, temp_msg, window);
+    free(temp_msg);
+
+    message = temp + 1;
+  }
+}

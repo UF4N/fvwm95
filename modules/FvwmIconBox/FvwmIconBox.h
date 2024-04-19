@@ -6,7 +6,7 @@
 #include <fvwm/fvwmlib.h>
 
 struct icon_info;
-Bool ExecIconBoxFunction(char *msg);
+Bool ExecIconBoxFunction(const char *msg);
 extern void   CreateWindow(void);
 extern Pixel  GetColor(char *name);
 extern Pixel  GetHilite(Pixel background);
@@ -21,7 +21,6 @@ extern void   change_window_name(char *str);
 extern int    My_XNextEvent(Display *dpy, XEvent *event);
 extern void   CopyString(char **dest, char *source);
 extern void   RelieveWindow(Window win,int x,int y,int w,int h,GC rGC,GC sGC); 
-extern void   SendFvwmPipe(int *,char *text, unsigned long window);
 extern void   DeadPipe(int nonsense);
 extern void   CreateIconWindow(struct icon_info *item);
 extern void   ConfigureIconWindow(struct icon_info *item);

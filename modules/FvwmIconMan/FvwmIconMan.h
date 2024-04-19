@@ -274,7 +274,6 @@ extern void Free (void *p);
 extern void ConsoleMessage(char *fmt, ...);
 extern void ShutMeDown (int flag);
 extern void DeadPipe (int nothing);
-extern void SendFvwmPipe(char *message, unsigned long window);
 extern char *copy_string (char **target, char *src);
 
 extern void init_globals (void);

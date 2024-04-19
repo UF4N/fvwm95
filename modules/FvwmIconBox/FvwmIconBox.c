@@ -167,6 +167,8 @@ int ready = 0;
 unsigned long local_flags = 0;
 int sortby = UNSORT;
 
+static void SendFvwmPipeIcon(int fd, const char *message, unsigned long window);
+
 /************************************************************************
   Main 
   Based on main() from GoodStuff:
@@ -239,7 +241,7 @@ void main(int argc, char **argv)
 
   CreateWindow();
 
-  SendFvwmPipe(fd,"Send_WindowList",0);
+  SendFvwmPipeIcon(fd[0],"Send_WindowList",0);
 
   Loop();
 }
@@ -1231,44 +1233,30 @@ Pixel GetColor(char *name)
   return color.pixel;
 }
 
-/************************************************************************
-  SendFvwmPipe - Send a message back to fvwm 
-    Original work from FvwmWinList:
-      Copyright 1994, Mike Finger.
-************************************************************************/
-void SendFvwmPipe(int *fd, char *message,unsigned long window)
+static void SendFvwmPipeIcon(int fd, const char *message, unsigned long window)
 {
-  int w;
-  char *hold,*temp,*temp_msg;
-  hold=message;
-
-  while(1) {
-    temp=strchr(hold,',');
-    if (temp!=NULL) {
-      temp_msg=malloc(temp-hold+1);
-      strncpy(temp_msg,hold,(temp-hold));
-      temp_msg[(temp-hold)]='\0';
-      hold=temp+1;
-    } else temp_msg=hold;
-
-    if (!ExecIconBoxFunction(temp_msg)){
-      write(fd[0],&window, sizeof(unsigned long));
-
-      w=strlen(temp_msg);
-      write(fd[0],&w,sizeof(int));
-      write(fd[0],temp_msg,w);
-
-      /* keep going */
-      w=1;
-      write(fd[0],&w,sizeof(int));
-
+  while(1)
+  {
+    const char* temp = strchr(message, ',');
+    if (NULL == temp) {
+        if (!ExecIconBoxFunction(message))
+            SendInfo(fd, message, window);
+        break;
     }
-    if(temp_msg!=hold) free(temp_msg);
-    	else break;
+
+    int len = temp - message;
+    char *temp_msg = malloc(len + 1);
+    memcpy(temp_msg, message, len);
+    temp_msg[len] = 0;
+    if (!ExecIconBoxFunction(temp_msg))
+        SendInfo(fd, temp_msg, window);
+    free(temp_msg);
+
+    message = temp + 1;
   }
 }
 
-Bool ExecIconBoxFunction(char *msg)
+Bool ExecIconBoxFunction(const char *msg)
 {
   if (strncasecmp(msg, "Next", 4) == 0){
     Next();
@@ -2610,7 +2598,7 @@ void ExecuteAction(int x, int y, struct icon_info *item)
 
   while (tmp != NULL){
     if (tmp->mouse == d.xbutton.button && tmp->type == type){
-      SendFvwmPipe(fd, tmp->action, item->id);
+    	SendFvwmPipeIcon(fd[0], tmp->action, item->id);
       return;
     }
     tmp = tmp->next;
@@ -2631,7 +2619,7 @@ void ExecuteKey(XEvent event)
     XKeysymToKeycode(dpy,XKeycodeToKeysym(dpy,event.xkey.keycode,0));
   while (tmp != NULL){
     if (tmp->keycode == event.xkey.keycode){
-      SendFvwmPipe(fd, tmp->action, item->id);
+      SendFvwmPipeIcon(fd[0], tmp->action, item->id);
       return;
     }
     tmp = tmp->next;

@@ -233,26 +233,6 @@ void DeadPipe (int nothing)
   ShutMeDown (0);
 }
 
-void SendFvwmPipe (char *message,unsigned long window)
-{
-  char *hold,*temp,*temp_msg;
-  hold=message;
-
-  while(1) {
-    temp=strchr(hold,',');
-    if (temp!=NULL) {
-      temp_msg= (char *)safemalloc(temp-hold+1);
-      strncpy(temp_msg,hold,(temp-hold));
-      temp_msg[(temp-hold)]='\0';
-      hold=temp+1;
-    } else temp_msg=hold;
-
-    SendInfo(Fvwm_fd[0], temp_msg, window);
-
-    if(temp_msg!=hold) free(temp_msg);
-    else break;
-  }
-}
 
 static void main_loop (void)
 {
