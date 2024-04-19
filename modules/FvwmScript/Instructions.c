@@ -390,7 +390,7 @@ char *FuncStrCopy(int *NbArg, long *TabArg)
 char *LaunchScript (int *NbArg,long *TabArg)
 {
  char *arg,*execstr,*str,*scriptarg,*scriptname;
- int leng,i;
+ int i;
  Atom MyAtom;
 
  /* Lecture des arguments */
@@ -433,13 +433,7 @@ char *LaunchScript (int *NbArg,long *TabArg)
  free(scriptarg);
  free(arg);
 
- /* Envoi de la commande */
- write(fd[0], &ref, sizeof(Window));
- leng = strlen(execstr);
- write(fd[0], &leng, sizeof(int));
- write(fd[0], execstr, leng);
- leng = 1;
- write(fd[0], &leng, sizeof(int));
+ SendInfo(fd[0], execstr, ref);
  free(execstr);
 
  /* Retourne l'id du fils */
@@ -552,26 +546,15 @@ char *ReceivFromScript (int *NbArg,long *TabArg)
 
 void Exec (int NbArg,long *TabArg)
 {
- int leng;
- char *execstr;
- char *tempstr;
- int i;
-
- execstr=(char*)calloc(1,256);
- for (i=0;i<NbArg;i++)
+ char *execstr=(char*)calloc(1,256);
+ for (int i=0;i<NbArg;i++)
  {
-  tempstr=CalcArg(TabArg,&i);
+  char *tempstr=CalcArg(TabArg,&i);
   execstr=strcat(execstr,tempstr);
   free(tempstr);
  }
  
- write(fd[0], &ref, sizeof(Window));
- leng = strlen(execstr);
- write(fd[0], &leng, sizeof(int));
- write(fd[0], execstr, leng);
- leng = 1;
- write(fd[0], &leng, sizeof(int));
- 
+ SendInfo(fd[0], execstr, ref);
  
  free(execstr);
 }

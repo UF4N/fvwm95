@@ -1100,13 +1100,7 @@ void DoCommand (Item *cmd)
     AddChar('\0');
     fprintf(fp_err, "Final command[%d]: [%s]\n", k, buf);
 
-    /* send command */
-    write(fd_out, &ref, sizeof(Window));
-    len = strlen(buf);
-    write(fd_out, &len, sizeof(int));
-    write(fd_out, buf, len);
-    len = 1;
-    write(fd_out, &len, sizeof(int));
+    SendInfo(fd_out, buf, ref);
   }
   
   /* post-command */

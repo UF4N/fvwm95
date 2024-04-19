@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fvwm/fvwmlib.h>
 
 /***********************************************************************
  *
@@ -9,7 +10,7 @@
  *	SendInfo - send a command back to fvwm 
  *
  ***********************************************************************/
-void SendInfo(int fd, const char *message, unsigned long window)
+void SendInfo(int fd, const char *message, Window window)
 {
   if (NULL == message)
     return;
@@ -28,7 +29,7 @@ void SendInfo(int fd, const char *message, unsigned long window)
 }
 
 
-void SendFvwmPipe(int fd, const char *message, unsigned long window)
+void SendFvwmPipe(int fd, const char *message, Window window)
 {
   while(1)
   {
