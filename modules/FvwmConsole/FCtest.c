@@ -182,7 +182,7 @@ void server (int *fd) {
 	  if( buf == NULL ) {
 		break;
 	  }
-	  SendText(fd,buf,0); /* send command */
+	  SendInfo(fd[0], buf, 0); /* send command */
 	}
 	CloseSocket();
 	exit(0);

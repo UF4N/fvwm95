@@ -74,7 +74,7 @@ void InitSwallow(struct XObj *xobj)
 
  if (xobj->swallow!=NULL)
  {
-  SendText(fd,xobj->swallow,0);
+	 SendInfo(fd[0], xobj->swallow, 0);
  }
  else
   fprintf(stderr,"Error\n");

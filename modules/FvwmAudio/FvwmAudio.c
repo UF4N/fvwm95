@@ -182,7 +182,7 @@ void main(int argc, char **argv)
 	 * Play the startup sound.
 	 */
 	audio_play(BUILTIN_STARTUP);
-	SendText(fd,"Nop",0);
+	SendInfo(fd[0], "Nop", 0);
 	Loop(fd);
 }
 

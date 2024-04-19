@@ -247,7 +247,7 @@ void SendFvwmPipe (char *message,unsigned long window)
       hold=temp+1;
     } else temp_msg=hold;
 
-    SendText(Fvwm_fd, temp_msg, window);
+    SendInfo(Fvwm_fd[0], temp_msg, window);
 
     if(temp_msg!=hold) free(temp_msg);
     else break;

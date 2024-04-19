@@ -267,17 +267,7 @@ void main(int argc, char **argv)
 
   SetMessageMask(fd, M_NEW_DESK | M_END_WINDOWLIST | M_MAP | M_WINDOW_NAME |
 		 M_RES_CLASS | M_CONFIG_INFO | M_END_CONFIG_INFO | M_RES_NAME);
-/*
-  sprintf(set_mask_mesg,"SET_MASK %lu\n",
-	  (unsigned long)(M_NEW_DESK |
-			  M_END_WINDOWLIST| 
-			  M_MAP|
-			  M_RES_NAME|
-			  M_RES_CLASS|
-			  M_WINDOW_NAME));
 
-  SendText(fd,set_mask_mesg,0);
-*/
   ParseOptions(argv[3]);
   if(num_buttons == 0)
     {
@@ -426,7 +416,7 @@ Solid:
   /* request a window list, since this triggers a response which
    * will tell us the current desktop and paging status, needed to
    * indent buttons correctly */
-  SendText(fd,"Send_WindowList",0);
+  SendInfo(fd[0], "Send_WindowList", 0);
   Loop();
 
 }
@@ -1961,7 +1951,7 @@ void match_string(char *tline)
       i2 = strlen(ptr);
       strncat(ptr,&tline[n],len);
       ptr[i2+len]=0;
-      SendText(fd,ptr,0);     
+      SendInfo(fd[0], ptr, 0);     
       free(ptr);
       actual->action = NULL;
     }

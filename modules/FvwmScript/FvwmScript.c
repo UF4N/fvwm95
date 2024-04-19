@@ -741,7 +741,7 @@ void main (int argc, char **argv)
 
  ParseOptions();
  
- SendText(fd,"Send_WindowList",0);
+ SendInfo(fd[0], "Send_WindowList", 0);
 
  ReadConfig(ScriptName);	/* Lecture et analyse du script */
 

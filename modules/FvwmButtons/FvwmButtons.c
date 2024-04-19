@@ -63,14 +63,6 @@
 #define SW_EVENTS   (PropertyChangeMask | StructureNotifyMask |\
 		     ResizeRedirectMask | SubstructureNotifyMask)
 
-#ifdef DEBUG_FVWM
-#define MySendText(a,b,c) {\
-  fprintf(stderr,"%s: Sending text to fvwm: \"%s\"\n",MyName,(b));\
-  SendText((a),(b),(c));}
-#else
-#define MySendText(a,b,c) SendText((a),(b),(c));
-#endif
-
 /* --------------------------- external functions -------------------------- */
 extern void DumpButtons(button_info*);
 extern void SaveButtons(button_info*);
@@ -516,7 +508,7 @@ void main(int argc, char **argv)
   /* request a window list, since this triggers a response which
    * will tell us the current desktop and paging status, needed to
    * indent buttons correctly */
-  MySendText(fd,"Send_WindowList",0);
+  SendInfo(fd[0], "Send_WindowList", 0);
 
 # ifdef DEBUG_INIT
   fprintf(stderr,"OK\n%s: Startup complete\n",MyName);
@@ -676,7 +668,7 @@ void Loop(void)
 		    while(act[i2]!=0 && isspace((unsigned char)act[i2]))
 		      i2++;
 		    strcat(tmp,&act[i2]);
-		    MySendText(fd,tmp,0);
+		    SendInfo(fd[0], tmp, 0);
 		    free(tmp);
 		  }
 		else if(strncasecmp(act,"DumpButtons",11)==0)
@@ -684,7 +676,7 @@ void Loop(void)
 		else if(strncasecmp(act,"SaveButtons",11)==0)
 		  SaveButtons(UberButton);
 		else
-		  MySendText(fd,act,0);
+			SendInfo(fd[0], act, 0);
 	      }
 	    b=CurrentButton;
 	    CurrentButton=NULL;
@@ -748,7 +740,7 @@ void Loop(void)
 #                     endif
 		      b->swallow|=1;
 		      b->flags|=b_Swallow|b_Hangon;
-		      MySendText(fd,b->spawn,0);
+		      SendInfo(fd[0], b->spawn, 0);
 		    }
 		  else
 		    {
@@ -1458,7 +1450,7 @@ void SpawnSome()
 	  fprintf(stderr,"%s: Button 0x%06x did not find a \"%s\" window, %s",
 		  MyName,(ushort)b,b->hangon,"spawning own\n");
 #         endif
-	  SendText(fd,b->spawn,0);
+	  SendInfo(fd[0], b->spawn, 0);
 	}
 }
 
@@ -1645,7 +1637,7 @@ void swallow(unsigned long *body)
 
 	    /* Request a new windowlist, we might have ignored another 
 	       matching window.. */
-	    SendText(fd,"Send_WindowList",0);
+	    SendInfo(fd[0], "Send_WindowList", 0);
 
 	    /* Back one square and lose one turn */
 	    b->swallow&=~b_Count;

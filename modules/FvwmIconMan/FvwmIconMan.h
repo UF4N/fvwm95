@@ -312,7 +312,6 @@ extern void move_highlight (WinManager *man, int to);
 extern int move_win_iconlist (WinData *win);
 
 extern char *safemalloc(int length);
-extern void SendText(int *fd,char *message,unsigned long window);
 extern void SetMessageMask(int *fd, unsigned long mask);
 extern int ReadFvwmPacket(int fd, unsigned long *header, unsigned long **body);
 extern int matchWildcards(char *pattern, char *string);
