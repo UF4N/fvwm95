@@ -778,7 +778,7 @@ else
 			  Folders[LastMapped].mapped = NOTMAPPED;
 			  LastMapped = -1;
 			}
-		      SendInfo(fd,Buttons[CurrentButton].action,0);
+		      SendInfo(fd[0],Buttons[CurrentButton].action,0);
 		    }		  
 		  if((Buttons[CurrentButton].action)&&
 		     (strncasecmp(Buttons[CurrentButton].action,"exec",4)== 0))

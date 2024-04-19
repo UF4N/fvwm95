@@ -9,20 +9,21 @@
  *	SendInfo - send a command back to fvwm 
  *
  ***********************************************************************/
-void SendInfo(int *fd,char *message,unsigned long window)
+void SendInfo(int fd, const char *message, unsigned long window)
 {
-  int w;
+  if (NULL == message)
+    return;
 
-  if(message != NULL)
-    {
-      write(fd[0],&window, sizeof(unsigned long));
-      w=strlen(message);
-      write(fd[0],&w,sizeof(int));
-      write(fd[0],message,w);
+  int kg = 1; /* keep going */
+  int len = strlen(message);
+  int bufsz = sizeof(window) + sizeof(len) + len + sizeof(kg);
+  char buf[bufsz];
+  memcpy(buf, &window, sizeof(window));
+  memcpy(buf + sizeof(window), &len, sizeof(len));
+  memcpy(buf + sizeof(window) + sizeof(len), message, len);
+  memcpy(buf + sizeof(window) + sizeof(len) + len, &kg, sizeof(kg));
 
-      /* keep going */
-      w=1;
-      write(fd[0],&w,sizeof(int));
-    }
+  if (write(fd, buf, bufsz) != bufsz)
+      fprintf(stderr, "%s: write error\n", __func__);
 }
 

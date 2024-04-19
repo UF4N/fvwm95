@@ -80,7 +80,7 @@ void main(int argc, char **argv)
 
   fd_width = GetFdWidth();
   sprintf(mask_mesg,"SET_MASK %lu\n",(unsigned long)(M_FOCUS_CHANGE));
-  SendInfo(fd,mask_mesg,0);
+  SendInfo(fd[0],mask_mesg,0);
   Loop(fd);
 }
 
@@ -136,7 +136,7 @@ void Loop(int *fd)
 		  if(timeout == 0)
 		    {
 		      if(focus_win != 0)
-			SendInfo(fd,"Raise",focus_win);		    
+			SendInfo(fd[0],"Raise",focus_win);		    
 		      Raised = 1;
 		    }
 		}
@@ -149,7 +149,7 @@ void Loop(int *fd)
 	  Raised = 1;
 	  if(focus_win != 0)
 	    {
-	      SendInfo(fd,"Raise",focus_win);
+	      SendInfo(fd[0],"Raise",focus_win);
 	    }
 	}
     }

@@ -163,14 +163,14 @@ void main(int argc, char **argv)
   tmp_file = cpp_defs(dpy, display_name,cpp_options, filename);
 
   sprintf(read_string,"read %s\n",tmp_file);
-  SendInfo(fd,read_string,0);
+  SendInfo(fd[0],read_string,0);
 
   /* For a debugging version, we may wish to omit this part. */
   /* I'll let some cpp advocates clean this up */
   if(!cpp_debug)
     {
       sprintf(delete_string,"exec rm %s\n",tmp_file);
-      SendInfo(fd,delete_string,0);
+      SendInfo(fd[0],delete_string,0);
     }
 }
 
