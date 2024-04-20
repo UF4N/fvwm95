@@ -1,3 +1,4 @@
+#include <time.h>
 #include "types.h"
 
 extern int fd[2];
