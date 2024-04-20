@@ -329,7 +329,7 @@ void RedoIconName(FvwmWindow *Tmp_win)
   if(Tmp_win->flags & SUPPRESSICON)
     return;
 
-  if (Tmp_win->icon_w == (int)NULL)
+  if (None == Tmp_win->icon_w)
     return;
 
   if (Tmp_win->icon_name == NULL)

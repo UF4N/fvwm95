@@ -42,7 +42,7 @@ void DumpButtons(button_info *b)
 	    b->BWidth,b->BHeight,b->flags);
     
   if(b->flags&b_Font)
-    fprintf(stderr,"Font(%s,%i) ",b->font_string,(int)(b->font));
+    fprintf(stderr,"Font(%s,%p) ", b->font_string, b->font);
   if(b->flags&b_Padding)
     fprintf(stderr,"Padding(%i,%i) ",b->xpad,b->ypad);
   if(b->flags&b_Frame)
