@@ -5,7 +5,7 @@ static HashTab hash_tab;
 void print_stringlist (StringList *list)
 {
   StringEl *p;
-  char *s;
+  const char *s = "";
 
   printf ("\tmask = 0x%x\n", list->mask);
   for (p = list->list; p; p = p->next) {

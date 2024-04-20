@@ -50,24 +50,19 @@ void InitPictureCMap(Display *dpy,Window Root)
 
 Picture *LoadPicture(Display *dpy,Window Root,char *path)
 {
-  int i,l;
-  Picture *p;
-#ifdef XPM
-  XpmAttributes xpm_attributes;
-#endif
-
-  p=(Picture*)safemalloc(sizeof(Picture));
+  Picture *p=(Picture*)safemalloc(sizeof(Picture));
   p->count=1;
   p->name=path;
   p->next=NULL;
 
 #ifdef XPM
   /* Try to load it as an X Pixmap first */
-  xpm_attributes.colormap=PictureCMap;
-  xpm_attributes.closeness=40000; /* Allow for "similar" colors */
-  xpm_attributes.valuemask=
-    XpmSize | XpmReturnPixels | XpmColormap | XpmCloseness;
-  
+  XpmAttributes xpm_attributes = {
+      .colormap = PictureCMap,
+      .closeness = 40000, /* Allow for "similar" colors */
+      .valuemask = XpmSize | XpmReturnPixels | XpmColormap | XpmCloseness
+  };
+
   if(XpmReadFileToPixmap(dpy,Root,path,&p->picture,&p->mask,&xpm_attributes)
      == XpmSuccess) 
     { 
@@ -79,6 +74,7 @@ Picture *LoadPicture(Display *dpy,Window Root,char *path)
 #endif
 
   /* If no XPM support, or XPM loading failed, try bitmap */
+  int l;
   if(XReadBitmapFile(dpy,Root,path,&p->width,&p->height,&p->picture,&l,&l)
      == BitmapSuccess)
     {

@@ -33,7 +33,7 @@ void ProcessNewStyle(XEvent *eventp,
                      char *text,
                      int *Module)
 {
-  char *name, *line;
+  char *name;
   char *ticon_name = NULL;
   char *restofline,*tmp;
   char *icon_name = NULL;
@@ -65,7 +65,6 @@ void ProcessNewStyle(XEvent *eventp,
     return;
 
   while(isspace((unsigned char)*restofline)&&(*restofline != 0))restofline++;
-  line = restofline;
 
   if(restofline == NULL)return;
   while((*restofline != 0)&&(*restofline != '\n'))

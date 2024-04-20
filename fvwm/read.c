@@ -56,22 +56,18 @@ static void ReadSubFunc(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
                         int piperead)
 {
   char *filename= NULL,*Home, *home_file, *ofilename = NULL;
-  char *rest,*tline,line[1000];
+  char *tline,line[1000];
   int HomeLen;
   FILE *fd;
-  int thisfileno;
-  extern Bool Restarting;
-  extern XEvent Event;
 #ifdef I18N
   char *Lang;
 #endif
 
-  thisfileno = numfilesread;
   numfilesread++;
 
 /*  fvwm_msg(INFO,piperead?"PipeRead":"Read","action == '%s'",action); */
 
-  rest = GetNextToken(action,&ofilename);
+  GetNextToken(action,&ofilename);
   if(ofilename == NULL)
   {
     fvwm_msg(ERR,piperead?"PipeRead":"Read","missing parameter");
