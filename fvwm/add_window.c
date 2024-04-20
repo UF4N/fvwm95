@@ -1063,7 +1063,7 @@ unsigned long LookInList(name_list *list, char *name, XClassHint *class,
 	        }
           }
 
-          if (!strcmp(nptr->name,name) == TRUE)
+          if (!strcmp(nptr->name,name))
           {
 	      if(nptr->value  != NULL) *value  = nptr->value;
 	      if(nptr->tvalue != NULL) *tvalue = nptr->tvalue;
