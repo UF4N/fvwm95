@@ -908,7 +908,6 @@ void HandleUnmapNotify()
 {
   int dstx, dsty;
   Window dumwin;
-  XEvent dummy;
   extern FvwmWindow *colormap_win;
 
   if(Event.xunmap.event != Event.xunmap.window)

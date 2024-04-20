@@ -40,7 +40,7 @@ int menuFromFrameOrWindowOrTitlebar = FALSE;
 extern int Context,Button;
 extern FvwmWindow *ButtonWindow, *Tmp_win;
 extern XEvent Event;
-int Stashed_X, Stashed_Y, MenuY = 0;
+static int Stashed_X, Stashed_Y, MenuY = 0;
 
 void DrawTrianglePattern(Window,GC,int,int,int,int);
 void DrawSeparator(Window, GC,GC,int, int,int,int,int);

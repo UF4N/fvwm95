@@ -97,16 +97,11 @@ int main(int argc, char **argv)
 {
   char *display_name = NULL, *string = NULL;
   int retval = 0;
-  XGCValues gcv;
-  unsigned long gcm;
   XEvent Event;
   fd_set in_fdset;
   int fd_width ;
-  time_t t;
   struct timeval value;
-  int fd[2],i;
-  int x1,x2,y1,y2;
-  XRectangle rect;
+  int fd[2];
 
   fd_width = GetFdWidth();
   
@@ -268,8 +263,6 @@ int main(int argc, char **argv)
  ****************************************************************************/
 void GetXPMData(char **data)
 {
-  int code;
-
   view.attributes.valuemask = XpmReturnPixels| XpmCloseness | XpmExtensions;
   view.attributes.closeness = 40000 /* Allow for "similar" colors */;
   if(XpmCreatePixmapFromData(dpy, Root, data,
@@ -282,7 +275,6 @@ void GetXPMData(char **data)
 }
 void GetXPMFile(char *file, char *path)
 {
-  int code;
   char *full_file = NULL;
 
   view.attributes.valuemask = XpmReturnPixels| XpmCloseness | XpmExtensions;

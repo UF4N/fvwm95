@@ -50,14 +50,13 @@ static void unmap_manager (WinManager *man)
 static void resize_manager (WinManager *man, int w, int h)
 {
   XSizeHints size;
-  long mask, oldwidth, oldheight;
+  long mask, oldheight;
 
   if (man->win_height == h)
     return;
 
   XGetWMNormalHints (theDisplay, man->theWindow, &size, &mask);
-  
-  oldwidth = man->win_width;
+
   oldheight = man->win_height;
 
   man->win_width = w;
@@ -228,17 +227,12 @@ static void draw_3d_icon (WinManager *man, int box, int iconified, int dir,
 static void iconify_box (WinManager *man, int box, int iconified,
                          Contexts contextId)
 {
-  int x, y, h;
-  int focus;
-
-  focus = (box == man->focus_box);
-  
   if (!man->window_up)
     return;
 
-  x = 6;
-  y = box * man->boxheight + 4;
-  h = man->boxheight - 8;
+  int x = 6;
+  int y = box * man->boxheight + 4;
+  int h = man->boxheight - 8;
   
   if (theDepth > 2) {
     draw_3d_icon (man, box, iconified, 1, contextId);
@@ -366,7 +360,6 @@ void move_highlight (WinManager *man, int to)
 void draw_window (WinManager *man)
 {
   WinData *p;
-  int i, focus;
 
   if (!man || !man->window_up) {
     return;
@@ -375,10 +368,10 @@ void draw_window (WinManager *man)
   XFillRectangle (theDisplay, man->theWindow, man->backContext[PLAIN_CONTEXT], 
 		  0, 0, man->win_width, man->win_height);
 
-  for (i = 0, p = man->icon_list.head; 
+  int i = 0;
+  for (p = man->icon_list.head; 
        i < man->icon_list.n; 
        i++, p = p->icon_next) {
-    focus = (i == man->focus_box);
     draw_button (man, p, i );
   }
 
@@ -499,7 +492,7 @@ void xevent_loop (void)
   KeySym keysym;
   XComposeStatus compose;
   WinData *win;
-  int i, k, glob_x, glob_y, x, y, mask;
+  int k, glob_x, glob_y, x, y, mask;
   char buffer[100];
   static int flag = 0;
   WinManager *man;
@@ -537,7 +530,7 @@ void xevent_loop (void)
 #endif
 
     case KeyPress:
-      i = XLookupString ((XKeyEvent *)&theEvent, buffer, 100, 
+      XLookupString ((XKeyEvent *)&theEvent, buffer, 100, 
 			 &keysym, &compose);
       if ((keysym >= XK_KP_Space && keysym <= XK_KP_9) ||
           (keysym >= XK_space && keysym <= XK_asciitilde)) {

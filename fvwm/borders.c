@@ -61,14 +61,13 @@ void SetBorder (FvwmWindow *t, Bool onoroff,Bool force,Bool Mapped,
 		Window expose_win)
   {
   int    i, x, y;
-  Pixel  BackColor, ForeColor, TitleBackColor, TitleTextColor;
-  Pixmap BackPixmap, TextColor;
+  Pixel  BackColor, ForeColor, TitleBackColor;
+  Pixmap BackPixmap;
   GC     ReliefGC, ShadowGC;
   Bool   NewColor = False;
   XSetWindowAttributes attributes;
   unsigned long valuemask;
   static unsigned int corners[4];
-  Window w;
 
   corners[0] = TOP_HILITE | LEFT_HILITE;
   corners[1] = TOP_HILITE | RIGHT_HILITE;
@@ -90,17 +89,10 @@ void SetBorder (FvwmWindow *t, Bool onoroff,Bool force,Bool Mapped,
     if ((Scr.Hilite != t) && (Scr.Hilite != NULL))
       SetBorder(Scr.Hilite, False, False, True, None);
 
-    /* set the keyboard focus */
-    if ((Mapped) && (t->flags&MAPPED) && (Scr.Hilite != t))
-      w = t->w;
-    else if ((t->flags & ICONIFIED) &&
-            (Scr.Hilite != t) && (!(t->flags & SUPPRESSICON)))
-      w = t->icon_w;
     Scr.Hilite = t;
 
     BackPixmap = Scr.gray_pixmap;
     TitleBackColor = Scr.ActiveTitleColors.back;
-    TitleTextColor = Scr.ActiveTitleColors.fore;
     }
   else
     {
@@ -119,13 +111,11 @@ void SetBorder (FvwmWindow *t, Bool onoroff,Bool force,Bool Mapped,
       {
       BackPixmap = Scr.sticky_gray_pixmap;
       TitleBackColor = Scr.StickyColors.back;
-      TitleTextColor = Scr.StickyColors.fore;
       }
     else
       {
       BackPixmap = Scr.light_gray_pixmap;
       TitleBackColor = t->BackPixel;
-      TitleTextColor = t->TextPixel;
       }
     }
 
@@ -359,7 +349,7 @@ void SetBorder (FvwmWindow *t, Bool onoroff,Bool force,Bool Mapped,
  ****************************************************************************/
 void SetTitleBar (FvwmWindow *t, Bool onoroff, Bool NewTitle)
   {
-  int x, y, w, i;
+  int w;
   Pixel Forecolor, BackColor;
 
   if (!t) return;
@@ -389,8 +379,8 @@ void SetTitleBar (FvwmWindow *t, Bool onoroff, Bool NewTitle)
     w = 0;
     }
 
-  x = Scr.button_width*t->nr_left_buttons + 6;
-  y = ((Scr.WindowFont.y + t->title_height) >> 1) - 1; 
+  int x = Scr.button_width*t->nr_left_buttons + 6;
+  int y = ((Scr.WindowFont.y + t->title_height) >> 1) - 1; 
   
   NewFontAndColor(Scr.WindowFont.font->fid, Forecolor, BackColor);
   

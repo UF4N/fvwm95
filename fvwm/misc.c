@@ -925,7 +925,6 @@ void fvwm_msg(int type, char *id, char *msg,...)
 {
   char *typestr;
   va_list args;
-  int error=0;
 
   switch(type)
   {

@@ -103,7 +103,6 @@ static char l_g_bits[] = {0x08, 0x02};
 
 #define s_g_width 4
 #define s_g_height 4
-static char s_g_bits[] = {0x01, 0x02, 0x04, 0x08};
 
 #ifdef SHAPE
 int ShapeEventBase, ShapeErrorBase;
@@ -112,7 +111,7 @@ Boolean ShapesSupported = False;
 
 long isIconicState = 0;
 extern XEvent Event;
-Bool Restarting = False;
+static Bool Restarting = False;
 int fd_width, x_fd;
 char *display_name = NULL;
 
@@ -136,7 +135,6 @@ int main(int argc, char **argv)
   char message[255];
   Bool single = False;
   Bool option_error = FALSE;
-  MenuRoot *mr;
 
   g_argv = argv;
   g_argc = argc;
@@ -928,11 +926,8 @@ void Done(int restart, char *command)
 
     {
       char *my_argv[10];
-      int i,done,j;
+      int i = 0, j = 0;
 
-      i=0;
-      j=0;
-      done = 0;
       while((g_argv[j] != NULL)&&(i<8))
       {
         if(strcmp(g_argv[j],"-s")!=0)

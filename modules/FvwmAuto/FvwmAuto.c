@@ -59,7 +59,6 @@ void DeadPipe(int nonsense);
  ***********************************************************************/
 void main(int argc, char **argv)
 {
-  FILE *file;
   char mask_mesg[80];
 
   if(argc != 7)
@@ -98,7 +97,6 @@ void Loop(int *fd)
   unsigned long header[HEADER_SIZE], *body;
   fd_set in_fdset;
   struct itimerval value;
-  int retval;
   int Raised = 0;
 
   while(1)
@@ -118,9 +116,9 @@ void Loop(int *fd)
 	retval=select(fd_width,(int *)&in_fdset, 0, 0, NULL);  
 #else      
       if((timeout > 0)&&(Raised == 0))
-	retval=select(fd_width,&in_fdset, 0, 0, &value.it_value);
+         select(fd_width,&in_fdset, 0, 0, &value.it_value);
       else
-	retval=select(fd_width,&in_fdset, 0, 0, NULL);  
+         select(fd_width,&in_fdset, 0, 0, NULL);  
 #endif
 
       if(FD_ISSET(fd[1], &in_fdset))

@@ -37,7 +37,6 @@ void ErrMsg( char *msg ) {
 void main ( int argc, char *argv[]) {
   char *cmd;
   unsigned char data[BUFSIZE];
-  int  len;  /* length of socket address */
   int  clen; /* command length */
   int  pid;  /* child process id */
   

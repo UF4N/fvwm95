@@ -89,7 +89,6 @@ char id[15], desktop[10], swidth[10], sheight[10], borderw[10], geometry[30];
 void main(int argc, char **argv)
 {
   char *temp, *s;
-  FILE *file;
   char *display_name = NULL;
   int Clength;
   char *tline;
@@ -191,12 +190,10 @@ void main(int argc, char **argv)
 void Loop(int *fd)
 {
   unsigned long header[4], *body;
-  char *cbody;
-  int body_length,count,count2=0,total;
 
   while(1)
     {
-      if((count = ReadFvwmPacket(fd[1],header,&body)) > 0)
+      if (ReadFvwmPacket(fd[1],header,&body) > 0)
 	{
 	  process_message(header[1],body);
 	  free(body);

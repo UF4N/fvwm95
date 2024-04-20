@@ -161,7 +161,6 @@ void FocusOn(FvwmWindow *t,int DeIconifyOnly, int RaiseWarp)
   int dx,dy;
   int cx,cy;
 #endif
-  int x,y;
 
   if(t == (FvwmWindow *)0)
     return;
@@ -189,17 +188,6 @@ void FocusOn(FvwmWindow *t,int DeIconifyOnly, int RaiseWarp)
   if (RaiseWarp)
     MoveViewport(dx,dy,True);
 #endif
-
-  if(t->flags & ICONIFIED)
-  {
-    x = t->icon_xl_loc + t->icon_w_width/2;
-    y = t->icon_y_loc + t->icon_p_height + ICON_HEIGHT/2;
-  }
-  else
-  {
-    x = t->frame_x;
-    y = t->frame_y;
-  }
 
   if (RaiseWarp) {
 #if 0 /* don't want to warp the pointer by default anymore */
@@ -374,7 +362,7 @@ MenuRoot *FindPopup(char *action)
   {
   char *tmp;
   MenuRoot *mr;
-  int x, y, dummy;
+  int dummy;
 
   action = GetNextToken(action, &tmp);
   
@@ -470,9 +458,9 @@ void destroy_menu(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 {
   MenuRoot *mr;
 
-  char *token, *rest;
+  char *token;
 
-  rest = GetNextToken(action, &token);
+  GetNextToken(action, &token);
   mr = FindPopup(token);
   if(mr == NULL) return;
   DestroyMenu(mr);
@@ -515,9 +503,9 @@ void movecursor(XEvent *eventp,Window w,FvwmWindow *tmp_win,unsigned long contex
 {
 #ifndef NON_VIRTUAL
   int x,y,delta_x,delta_y,warp_x,warp_y;
-  int val1, val2, val1_unit,val2_unit,n;
+  int val1, val2, val1_unit,val2_unit;
 
-  n = GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
+  GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
 
   XQueryPointer( dpy, Scr.Root, &JunkRoot, &JunkChild,
                  &x,&y,&JunkX, &JunkY, &JunkMask);
@@ -573,13 +561,13 @@ void iconify_function(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 
 {
   long val1;
-  int val1_unit, n;
+  int val1_unit;
 
   if (DeferExecution(eventp,&w,&tmp_win,&context, SELECT, 
 		     ButtonRelease))
     return;
 
-  n = GetOneArgument(action, &val1, &val1_unit);
+  GetOneArgument(action, &val1, &val1_unit);
 
   if (tmp_win->flags & ICONIFIED)
   {
@@ -841,9 +829,9 @@ void raise_it_func(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 		   unsigned long context, char *action, int *Module)
 {
   long val1;
-  int  val1_unit, n;
+  int  val1_unit;
 
-  n = GetOneArgument(action, &val1, &val1_unit);
+  GetOneArgument(action, &val1, &val1_unit);
 
   if(val1 != 0)
   {
@@ -1234,7 +1222,6 @@ void SetMenuColors(XEvent *eventp,Window w,FvwmWindow *tmp_win,
   unsigned long gcm;
   char *menufore = NULL, *menuback = NULL, *selfore=NULL, *selback=NULL;
   extern char *white, *black;
-  FvwmWindow *hilight;
 
   action = GetNextToken(action, &menufore);
   action = GetNextToken(action, &menuback);

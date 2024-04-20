@@ -1821,12 +1821,9 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 {
   fd_set in_fdset;
   unsigned long header[HEADER_SIZE];
-  int body_length;
-  int count,count2 = 0;
+  int count;
   static int miss_counter = 0;
   unsigned long *body;
-  int total;
-  char *cbody;
 
   if(XPending(dpy))
     {
@@ -2570,7 +2567,6 @@ Bool IsClick(int x,int y,unsigned EndMask, XEvent *d)
 void ExecuteAction(int x, int y, struct icon_info *item)
 {
   int type = NO_CLICK;
-  XEvent *ev;
   XEvent d;
   struct mousefunc *tmp;
 
@@ -2579,20 +2575,17 @@ void ExecuteAction(int x, int y, struct icon_info *item)
   if(IsClick(x,y,ButtonReleaseMask,&d))
     {
       type = CLICK;
-      ev = &d;
     }
 
   /* If it was a click, wait to see if its a double click */
   if((type == CLICK) && (IsClick(x,y,ButtonPressMask, &d)))
     {
       type = ONE_AND_A_HALF_CLICKS;
-      ev = &d;
     }
   if((type == ONE_AND_A_HALF_CLICKS) &&
      (IsClick(x,y,ButtonReleaseMask, &d))) 
     {
       type = DOUBLE_CLICK;
-      ev = &d;
     }
   tmp = MouseActions;
 

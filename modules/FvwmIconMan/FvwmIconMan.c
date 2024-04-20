@@ -637,7 +637,6 @@ static void read_in_resources (char *file)
 
 int main (int argc, char **argv)
 {
-  char *temp, *s;
   FvwmPacketBody temppacket;
 
 #ifdef I18N
@@ -653,11 +652,6 @@ int main (int argc, char **argv)
   OpenConsole();
   init_globals();
   init_winlists();
-  
-  temp = argv[0];
-  s = strrchr (argv[0], '/');
-  if (s != NULL)
-    temp = s + 1;
 
   if((argc != 6) && (argc != 7)) {
     fprintf(stderr,"%s Version %s should only be executed by fvwm!\n",Module,

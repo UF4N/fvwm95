@@ -355,7 +355,6 @@ void DeadPipe(int nonsense)
 static char *MkDef(char *name, char *def)
 {
   char *cp = NULL;
-  int maxsize = 0;
   int n;
 
   /* Get space to hold everything, if needed */

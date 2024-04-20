@@ -424,9 +424,9 @@ void MoveViewport(int newx, int newy, Bool grab)
 void changeDesks_func(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 		      unsigned long context,char *action, int *Module)
 {
-  int n,val1, val1_unit, val2, val2_unit;
+  int val1, val1_unit, val2, val2_unit;
 
-  n = GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
+  GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
   changeDesks(val1,val2);
 }
 
@@ -434,7 +434,6 @@ void changeDesks(int val1, int val2)
 {
   int oldDesk;
   FvwmWindow *FocusWin = 0, *t;
-  static FvwmWindow *StickyWin = 0;
 
   oldDesk = Scr.CurrentDesk;
 
@@ -484,7 +483,6 @@ void changeDesks(int val1, int val2)
 	  if (Scr.Focus == t) 
 	    {
 	      t->FocusDesk =oldDesk;
-	      StickyWin = t;
 	    }
 	}
     }
@@ -527,7 +525,7 @@ void changeWindowsDesk(XEvent *eventp,Window w,FvwmWindow *t,
 		       unsigned long context,char *action, int *Module)
 {
   long val1;
-  int val1_unit,n;
+  int val1_unit;
   
   if (DeferExecution(eventp, &w, &t, &context, SELECT, ButtonRelease))
     return;
@@ -535,7 +533,7 @@ void changeWindowsDesk(XEvent *eventp,Window w,FvwmWindow *t,
   if(t == NULL)
     return;
 
-  n = GetOneArgument(action, &val1, &val1_unit);
+  GetOneArgument(action, &val1, &val1_unit);
 
   if(val1 == t->Desk)
     return;
@@ -571,9 +569,9 @@ void scroll(XEvent *eventp,Window w,FvwmWindow *tmp_win,unsigned long context,
 	    char *action, int *Module)
 {
   int x,y;
-  int val1, val2, val1_unit,val2_unit,n;
+  int val1, val2, val1_unit,val2_unit;
 
-  n = GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
+  GetTwoArguments(action, &val1, &val2, &val1_unit, &val2_unit);
 
   if((val1 > -100000)&&(val1 < 100000))
     x=Scr.Vx + val1*val1_unit/100;

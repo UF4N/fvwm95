@@ -267,7 +267,6 @@ int FontWidth (XFontStruct *xfs)
 /* read the configuration file */
 void ReadConfig ()
 {
-  FILE *fp, *fopen();
   int prog_name_len, i, j, l, extra;
   char *line_buf;
   char *cp;
@@ -996,7 +995,7 @@ void ParseCommand (int dn, char *sp, char end, int *dn1, char **sp1)
 #define AddChar(chr) { if (dn >= N) { N *= 2; buf = (char *)realloc(buf, N); } buf[dn++] = (chr); }
 {
   static char var[256];
-  char c, x, *wp, *cp, *vp;
+  char c, x, *cp, *vp;
   int i, j, dn2;
   Item *item;
 
@@ -1014,7 +1013,7 @@ void ParseCommand (int dn, char *sp, char end, int *dn1, char **sp1)
     if (c == '$') {  /* variable */
       if (*sp != '(')
 	goto normal_char;
-      wp = ++sp;
+      ++sp;
       vp = var;
       while (1) {
 	x = *(sp++);
@@ -1087,7 +1086,7 @@ void ParseCommand (int dn, char *sp, char end, int *dn1, char **sp1)
 /* execute a command */
 void DoCommand (Item *cmd)
 {
-  int i, k, dn, len;
+  int i, k, dn;
   char *sp;
 
   /* pre-command */
