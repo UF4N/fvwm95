@@ -5,7 +5,7 @@ SHELL=/bin/sh
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-subdirs=FvwmAudio FvwmAuto FvwmBacker FvwmBanner FvwmButtons FvwmConsole \
+subdirs=FvwmAudio FvwmAuto FvwmBanner FvwmButtons FvwmConsole \
 	FvwmCpp FvwmDebug FvwmForm FvwmIconBox FvwmIconMan FvwmIdent FvwmM4 \
 	FvwmPager FvwmSave FvwmSaveDesk FvwmScript FvwmScroll FvwmTalk \
 	FvwmTaskBar FvwmWinList FvwmWharf

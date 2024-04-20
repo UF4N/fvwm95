@@ -207,7 +207,6 @@ AC_CONFIG_FILES([Makefile \
           modules/Makefile \
           modules/FvwmAudio/Makefile \
           modules/FvwmAuto/Makefile \
-          modules/FvwmBacker/Makefile \
           modules/FvwmBanner/Makefile \
           modules/FvwmButtons/Makefile \
           modules/FvwmConsole/Makefile \
