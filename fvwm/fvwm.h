@@ -326,6 +326,8 @@ extern Atom _XA_OL_DECOR_CLOSE;
 extern Atom _XA_OL_DECOR_RESIZE;
 extern Atom _XA_OL_DECOR_HEADER;
 extern Atom _XA_OL_DECOR_ICON_NAME;
+extern Atom _NET_WM_NAME;
+extern Atom UTF8_STRING;
 
 #endif /* _FVWM_ */
 

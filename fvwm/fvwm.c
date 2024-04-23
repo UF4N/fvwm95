@@ -675,6 +675,9 @@ Atom _XA_OL_DECOR_RESIZE;
 Atom _XA_OL_DECOR_HEADER;
 Atom _XA_OL_DECOR_ICON_NAME;
 
+Atom _NET_WM_NAME;
+Atom UTF8_STRING;
+
 void InternUsefulAtoms (void)
 {
   /* 
@@ -705,7 +708,8 @@ void InternUsefulAtoms (void)
   _XA_OL_DECOR_HEADER    = XInternAtom (dpy, "_OL_DECOR_HEADER", False);
   _XA_OL_DECOR_ICON_NAME = XInternAtom (dpy, "_OL_DECOR_ICON_NAME", False);
 
-  return;
+  _NET_WM_NAME = XInternAtom(dpy, "_NET_WM_NAME", False);
+  UTF8_STRING  = XInternAtom(dpy, "UTF8_STRING", False);
 }
 
 /***********************************************************************

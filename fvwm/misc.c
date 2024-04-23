@@ -88,7 +88,7 @@ gettextprop(Window w, Atom atom, char **text)
 	XGetTextProperty(dpy, w, &name, atom);
 	if (!name.nitems)
 		return 0;
-	if (name.encoding == XA_STRING)
+	if (name.encoding == XA_STRING || name.encoding == UTF8_STRING)
 		*text = (char *)name.value;
 	else {
 		if (XmbTextPropertyToTextList(dpy, &name, &list, &n) >= Success && n > 0 && *list) {
@@ -103,7 +103,7 @@ UpdateTitle(FvwmWindow *w)
 {
 //
 	w->name = NULL;
-	if (!gettextprop(w->w, XInternAtom(dpy, "_NET_WM_NAME", False), &w->name))
+	if (!gettextprop(w->w, _NET_WM_NAME, &w->name))
 		gettextprop(w->w, XA_WM_NAME, &w->name);
 	
 	if (NULL == w->name)
