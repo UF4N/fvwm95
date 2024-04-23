@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <iconv.h>
 
 #include "fvwm.h"
 #include "menus.h"
@@ -349,12 +350,12 @@ void SetBorder (FvwmWindow *t, Bool onoroff,Bool force,Bool Mapped,
  ****************************************************************************/
 void SetTitleBar (FvwmWindow *t, Bool onoroff, Bool NewTitle)
   {
-  int w;
+  if (NULL == t ||
+      NULL == t->name ||
+      !(t->flags & TITLE))
+    return;
+
   Pixel Forecolor, BackColor;
-
-  if (!t) return;
-  if (!(t->flags & TITLE)) return;
-
   if (onoroff) 
     {
     Forecolor = Scr.ActiveTitleColors.fore;
@@ -368,17 +369,6 @@ void SetTitleBar (FvwmWindow *t, Bool onoroff, Bool NewTitle)
 
   flush_expose(t->title_w);
   
-  if(t->name != (char *)NULL)
-    {
-    w = XTextWidth(Scr.WindowFont.font,t->name,strlen(t->name));
-    if (w > t->title_width-12) w = t->title_width-4;
-    if (w < 0) w = 0;
-    }
-  else
-    {
-    w = 0;
-    }
-
   int x = Scr.button_width*t->nr_left_buttons + 6;
   int y = ((Scr.WindowFont.y + t->title_height) >> 1) - 1; 
   
@@ -386,30 +376,39 @@ void SetTitleBar (FvwmWindow *t, Bool onoroff, Bool NewTitle)
   
   if (NewTitle) XClearWindow (dpy, t->title_w);
 
-#ifdef I18N
-#undef FONTSET
-#define FONTSET Scr.WindowFont.fontset
-#endif /* I18N */
+  iconv_t cd = iconv_open("UTF-16BE", "UTF-8");
+
+  size_t fromLen = strlen(t->name) + 1; // get the size to be converted.
+  size_t afromLen = fromLen;
+  // set the size to contain the result as twice of utf-8 length
+  // (if there is all ascii, twice is needed.)
+  size_t toLen = fromLen << 1;
+  size_t toLen0 = toLen;
+  // prepare a buffer to contain the UTF-16 string.
+  char* buff = (char*)malloc(toLen);
+  // because iconv() function will move the pointer, prepare a backup.
+  char* abuff = buff;
+  char* fromStr = t->name;
+  iconv(cd, &fromStr, &afromLen, &abuff, &toLen);
+  iconv_close(cd);
 
   /* for mono, we clear an area in the title bar where the window
    * title goes, so that its more legible. For color, no need */
+  int buff_len = (toLen0-toLen)/2 - 1;
   if(Scr.d_depth<2)
     {
+    int w = XTextWidth16(Scr.WindowFont.font, (const XChar2b *)buff, buff_len);
+    if (w > t->title_width-12) w = t->title_width-4;
+    if (w < 0) w = 0;
     XFillRectangle(dpy,t->title_w,
                    Scr.BlackGC,
                    x - 2, 0, w+4, t->title_height);
-      
-    if(t->name != (char *)NULL)
-      XDrawString (dpy, t->title_w,Scr.ScratchGC3, x, y,
-                   t->name, strlen(t->name));
-    }
-  else
-    { 
-    if(t->name != (char *)NULL)
-      XDrawString (dpy, t->title_w, Scr.ScratchGC3, x, y,
-                   t->name, strlen(t->name));
     }
 
+  XDrawString16(dpy, t->title_w, Scr.ScratchGC3, x, y,
+                (const XChar2b *)buff, buff_len);
+
+  free(buff);
   XFlush(dpy);
   }
 
