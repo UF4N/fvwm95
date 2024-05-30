@@ -25,7 +25,7 @@ depend:
 
 install: 
 	${INSTALL_DATA} ${RC} ${fvwm_dir} 
-	${LN} ${fvwm_dir}/${RC} ${fvwm_dir}/${fvwm_rc}  
+#	${LN} ${fvwm_dir}/${RC} ${fvwm_dir}/${fvwm_rc}  
 clean:
 	${RM} *~ core *.bak
 
